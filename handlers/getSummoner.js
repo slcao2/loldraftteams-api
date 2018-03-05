@@ -8,7 +8,7 @@ import {
 } from '../utilities/riotUtilities';
 
 export async function main(event, context, callback) {
-  const summonerName = event.body;
+  const { summonerName } = event.pathParameters;
 
   const temp = await getPlayerFromDB(summonerName);
   if (temp) {

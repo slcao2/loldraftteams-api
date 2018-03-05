@@ -1,4 +1,6 @@
-import AWS from 'aws-sdk';
+import AWS from 'aws-sdk/global';
+import S3 from 'aws-sdk/clients/s3';
+import DynamoDB from 'aws-sdk/clients/dynamodb';
 import request from 'request';
 import {
   API_KEY_S3_BUCKET,
@@ -37,7 +39,7 @@ export const requestHandler = options => new Promise((resolve, reject) => {
 });
 
 export const getApiKey = () => {
-  const s3 = new AWS.S3();
+  const s3 = new S3();
 
   const params = {
     Bucket: API_KEY_S3_BUCKET,
@@ -56,7 +58,7 @@ export const getApiKey = () => {
 };
 
 export const getPlayerFromDB = (summonerName) => {
-  const dynamoDB = new AWS.DynamoDB.DocumentClient();
+  const dynamoDB = new DynamoDB.DocumentClient();
 
   const params = {
     TableName: TABLE_NAME,
@@ -77,7 +79,7 @@ export const getPlayerFromDB = (summonerName) => {
 };
 
 export const updatePlayerItemInDB = (params) => {
-  const dynamoDB = new AWS.DynamoDB.DocumentClient();
+  const dynamoDB = new DynamoDB.DocumentClient();
 
   return new Promise((resolve, reject) => {
     dynamoDB.update(params, (err, data) => {
@@ -149,52 +151,7 @@ export const generateMatchListParams = (summonerName, matchList, matchListType) 
     UpdateExpression: `SET ${matchListExpressionName} = ${matchListExpressionValue}`,
   };
   return params;
-};
-
-// export const generateMatchParams = (summonerName, matchData) => {
-//   const params = {
-//     TableName: TABLE_NAME,
-//     Key: {
-//       name: summonerName,
-//     },
-//     ExpressionAttributeNames: {
-//       '#gameCreation': 'gameCreation',
-//       '#gameDuration': 'gameDuration',
-//       '#gameId': 'gameId',
-//       '#gameMode': 'gameMode',
-//       '#gameType': 'gameType',
-//       '#gameVersion': 'gameVersion',
-//       '#mapId': 'mapId',
-//       '#participantIdentities': 'participantIdentities',
-//       '#participants': 'participants',
-//       '#platformId': 'platformId',
-//       '#queueId': 'queueId',
-//       '#seasonId': 'seasonId',
-//       '#teams': 'teams',
-//     },
-//     ExpressionAttributeValues: {
-//       ':gameCreation': matchData.gameCreation,
-//       ':gameDuration': matchData.gameDuration,
-//       ':gameId': matchData.gameId,
-//       ':gameMode': matchData.gameMode,
-//       ':gameType': matchData.gameType,
-//       ':gameVersion': matchData.gameVersion,
-//       ':mapId': matchData.mapId,
-//       ':participantIdentities': matchData.participantIdentities,
-//       ':participants': matchData.participants,
-//       ':platformId': matchData.platformId,
-//       ':queueId': matchData.queueId,
-//       ':seasonId': matchData.seasonId,
-//       ':teams': matchData.teams,
-//     },
-//     UpdateExpression: `
-//       SET #gameCreation = :gameCreation, #gameDuration = :gameDuration, #gameId = :gameId, #gameMode = :gameMode,
-//           #gameType = :gameType, #gameVersion = :gameVersion, #mapId = :mapId, #participantIdentities = :participantIdentities,
-//           #participants = :participants, #platformId = :platformId, #queueId = :queueId, #seasonId = :seasonId, #teams = :teams
-//     `,
-//   };
-//   return params;
-// };
+}
 
 export const generateMatchParams = (summonerName, matchData, matchType) => {
   const matchExpressionName = `#${matchType}`;

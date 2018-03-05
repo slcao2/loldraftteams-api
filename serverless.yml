@@ -38,7 +38,7 @@ functions:
     handler: handlers/getSummoner.main
     events:
       - http:
-          path: summoner
+          path: summoner/{summonerName}
           method: get
           cors: true
           authorizer: aws_iam
@@ -46,7 +46,7 @@ functions:
     handler: handlers/getRanked.main
     events:
       - http:
-          path: league
+          path: league/{summonerName}/{summonerId}
           method: get
           cors: true
           authorizer: aws_iam
@@ -54,7 +54,7 @@ functions:
     handler: handlers/getMatchListForQueue.main
     events:
       - http:
-          path: matchlist
+          path: matchlist/{summonerName}/{accountId}/{queueId}
           method: get
           cors: true
           authorizer: aws_iam
@@ -62,7 +62,7 @@ functions:
     handler: handlers/getMatch.main
     events:
       - http:
-          path: match
+          path: match/{summonerName}/{gameId}/{queueId}
           method: get
           cors: true
           authorizer: aws_iam

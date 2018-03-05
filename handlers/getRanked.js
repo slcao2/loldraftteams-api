@@ -7,10 +7,10 @@ import {
 } from '../utilities/riotUtilities';
 
 export async function main(event, context, callback) {
-  const data = event.body;
+  const { summonerName, summonerId } = event.pathParameters;
 
   const options = {
-    url: NA + RANKED_POSITION_ENDPOINT + data.summonerId,
+    url: NA + RANKED_POSITION_ENDPOINT + summonerId,
     method: 'GET',
     headers: {
       'X-Riot-Token': await getApiKey(),
@@ -19,7 +19,7 @@ export async function main(event, context, callback) {
 
   const rankedData = await requestHandler(options);
 
-  const params = generateRankedParams(data.summonerName, rankedData);
+  const params = generateRankedParams(summonerName, rankedData);
 
   updatePlayerItemInDB(params);
 

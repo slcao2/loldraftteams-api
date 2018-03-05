@@ -8,10 +8,10 @@ import {
 } from '../utilities/riotUtilities';
 
 export async function main(event, context, callback) {
-  const data = event.body;
+  const { summonerName, gameId, queueId } = event.pathParameters;
 
   const options = {
-    url: NA + MATCH_ENDPOINT + data.gameId,
+    url: NA + MATCH_ENDPOINT + gameId,
     method: 'GET',
     headers: {
       'X-Riot-Token': await getApiKey(),
@@ -19,9 +19,9 @@ export async function main(event, context, callback) {
   };
 
   const matchData = await requestHandler(options);
-  const matchType = mapQueueIdToMatchType(data.queueId);
+  const matchType = mapQueueIdToMatchType(queueId);
 
-  const params = generateMatchParams(data.summonerName, matchData, matchType);
+  const params = generateMatchParams(summonerName, matchData, matchType);
 
   updatePlayerItemInDB(params);
 

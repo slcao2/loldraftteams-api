@@ -1,5 +1,5 @@
 {
-  "body": {
+  "pathParameters": {
     "summonerName": "r4nc0r",
     "accountId": 49556493,
     "queueId": 420
