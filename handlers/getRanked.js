@@ -1,21 +1,18 @@
 import { NA, RANKED_POSITION_ENDPOINT } from '../constants/riotConstants';
 import {
-  getApiKey,
   requestHandler,
   updatePlayerItemInDB,
   generateRankedParams,
 } from '../utilities/riotUtilities';
+import { generate200Response, generateOptionsRequest } from '../utilities/httpUtilities';
+
+export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName, summonerId } = event.pathParameters;
 
-  const options = {
-    url: NA + RANKED_POSITION_ENDPOINT + summonerId,
-    method: 'GET',
-    headers: {
-      'X-Riot-Token': await getApiKey(),
-    },
-  };
+  const url = NA + RANKED_POSITION_ENDPOINT + summonerId;
+  const options = generateOptionsRequest(url);
 
   const rankedData = await requestHandler(options);
 
@@ -23,5 +20,7 @@ export async function main(event, context, callback) {
 
   updatePlayerItemInDB(params);
 
-  return callback(null, rankedData);
+  const response = generate200Response(rankedData);
+
+  callback(null, response);
 }

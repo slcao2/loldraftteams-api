@@ -1,27 +1,27 @@
 import { NA, SUMMONER_NAME_ENDPOINT } from '../constants/riotConstants';
 import {
-  getApiKey,
   requestHandler,
   getPlayerFromDB,
   updatePlayerItemInDB,
   generateSummonerParams,
 } from '../utilities/riotUtilities';
+import { generate200Response, generateOptionsRequest } from '../utilities/httpUtilities';
+
+export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName } = event.pathParameters;
 
-  const temp = await getPlayerFromDB(summonerName);
-  if (temp) {
-    return callback(null, temp);
+  const cacheSummonerData = await getPlayerFromDB(summonerName);
+  if (cacheSummonerData) {
+    const response = generate200Response(cacheSummonerData);
+    callback(null, response);
+    return;
+    return;
   }
 
-  const options = {
-    url: NA + SUMMONER_NAME_ENDPOINT + summonerName,
-    method: 'GET',
-    headers: {
-      'X-Riot-Token': await getApiKey(),
-    },
-  };
+  const url = NA + SUMMONER_NAME_ENDPOINT + summonerName;
+  const options = generateOptionsRequest(url);
 
   const summonerData = await requestHandler(options);
 
@@ -29,5 +29,7 @@ export async function main(event, context, callback) {
 
   updatePlayerItemInDB(params);
 
-  return callback(null, summonerData);
+  const response = generate200Response(summonerData);
+
+  callback(null, response);
 }

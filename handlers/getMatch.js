@@ -1,22 +1,19 @@
 import { NA, MATCH_ENDPOINT } from '../constants/riotConstants';
 import {
-  getApiKey,
   requestHandler,
   updatePlayerItemInDB,
   generateMatchParams,
   mapQueueIdToMatchType,
 } from '../utilities/riotUtilities';
+import { generate200Response, generateOptionsRequest } from '../utilities/httpUtilities';
+
+export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName, gameId, queueId } = event.pathParameters;
 
-  const options = {
-    url: NA + MATCH_ENDPOINT + gameId,
-    method: 'GET',
-    headers: {
-      'X-Riot-Token': await getApiKey(),
-    },
-  };
+  const url = NA + MATCH_ENDPOINT + gameId;
+  const options = generateOptionsRequest(url);
 
   const matchData = await requestHandler(options);
   const matchType = mapQueueIdToMatchType(queueId);
@@ -25,5 +22,7 @@ export async function main(event, context, callback) {
 
   updatePlayerItemInDB(params);
 
-  return callback(null, matchData);
+  const response = generate200Response(matchData);
+
+  callback(null, response);
 }

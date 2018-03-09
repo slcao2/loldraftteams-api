@@ -4,3 +4,9 @@ export const API_KEY_S3_FILENAME = 'api-key.txt';
 
 // DynamoDB
 export const TABLE_NAME = 'loldraftteams';
+
+// Headers
+export const HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true,
+};

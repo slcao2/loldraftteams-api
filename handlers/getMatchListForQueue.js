@@ -3,23 +3,20 @@ import {
   MATCH_LIST_ENDPOINT,
 } from '../constants/riotConstants';
 import {
-  getApiKey,
   requestHandler,
   updatePlayerItemInDB,
   generateMatchListParams,
   mapQueueIdToMatchListType,
 } from '../utilities/riotUtilities';
+import { generate200Response, generateOptionsRequest } from '../utilities/httpUtilities';
+
+export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName, accountId, queueId } = event.pathParameters;
 
-  const options = {
-    url: `${NA + MATCH_LIST_ENDPOINT + accountId}?queue=${queueId}`,
-    method: 'GET',
-    headers: {
-      'X-Riot-Token': await getApiKey(),
-    },
-  };
+  const url = `${NA + MATCH_LIST_ENDPOINT + accountId}?queue=${queueId}`;
+  const options = generateOptionsRequest(url);
 
   const matchList = await requestHandler(options);
   const matchListType = mapQueueIdToMatchListType(queueId);
@@ -28,5 +25,7 @@ export async function main(event, context, callback) {
 
   updatePlayerItemInDB(params);
 
-  return callback(null, matchList);
+  const response = generate200Response(matchList);
+
+  callback(null, response);
 }
