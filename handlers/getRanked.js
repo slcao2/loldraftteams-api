@@ -12,7 +12,7 @@ export async function main(event, context, callback) {
   const { summonerName, summonerId } = event.pathParameters;
 
   const url = NA + RANKED_POSITION_ENDPOINT + summonerId;
-  const options = generateOptionsRequest(url);
+  const options = await generateOptionsRequest(url);
 
   const rankedData = await requestHandler(options);
 

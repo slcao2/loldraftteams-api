@@ -17,11 +17,10 @@ export async function main(event, context, callback) {
     const response = generate200Response(cacheSummonerData);
     callback(null, response);
     return;
-    return;
   }
 
   const url = NA + SUMMONER_NAME_ENDPOINT + summonerName;
-  const options = generateOptionsRequest(url);
+  const options = await generateOptionsRequest(url);
 
   const summonerData = await requestHandler(options);
 

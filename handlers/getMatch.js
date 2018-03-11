@@ -13,7 +13,7 @@ export async function main(event, context, callback) {
   const { summonerName, gameId, queueId } = event.pathParameters;
 
   const url = NA + MATCH_ENDPOINT + gameId;
-  const options = generateOptionsRequest(url);
+  const options = await generateOptionsRequest(url);
 
   const matchData = await requestHandler(options);
   const matchType = mapQueueIdToMatchType(queueId);

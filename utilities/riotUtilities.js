@@ -27,6 +27,9 @@ import {
 
 export const requestHandler = options => new Promise((resolve, reject) => {
   request(options, (error, response, body) => {
+    console.log(error);
+    console.log(response);
+    console.log(body);
     if (response.statusCode === RATE_LIMIT_EXCEEDED) {
       reject(new Error('Rate limit exceeded. Please try again in 2 minutes'));
     } else if (response.statusCode === FORBIDDEN) {
@@ -151,7 +154,7 @@ export const generateMatchListParams = (summonerName, matchList, matchListType) 
     UpdateExpression: `SET ${matchListExpressionName} = ${matchListExpressionValue}`,
   };
   return params;
-}
+};
 
 export const generateMatchParams = (summonerName, matchData, matchType) => {
   const matchExpressionName = `#${matchType}`;
