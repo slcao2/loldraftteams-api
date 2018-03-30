@@ -6,14 +6,15 @@ import {
   generateSummonerParams,
 } from '../utilities/riotUtilities';
 import { generate200Response, generateOptionsRequest } from '../utilities/httpUtilities';
+import { lowerCaseRemoveSpacesDecode } from '../utilities/stringUtilities';
 
 export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName } = event.pathParameters;
-  const decodedSummonerName = decodeURIComponent(summonerName);
+  const formattedSummonerName = lowerCaseRemoveSpacesDecode(summonerName);
 
-  const cacheSummonerData = await getPlayerFromDB(decodedSummonerName);
+  const cacheSummonerData = await getPlayerFromDB(formattedSummonerName);
   if (cacheSummonerData) {
     const response = generate200Response(cacheSummonerData);
     callback(null, response);
@@ -25,7 +26,7 @@ export async function main(event, context, callback) {
 
   const summonerData = await requestHandler(options);
 
-  const params = generateSummonerParams(summonerData);
+  const params = generateSummonerParams(formattedSummonerName, summonerData);
 
   updatePlayerItemInDB(params);
 

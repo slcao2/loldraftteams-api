@@ -6,12 +6,13 @@ import {
   mapQueueIdToMatchType,
 } from '../utilities/riotUtilities';
 import { generate200Response, generateOptionsRequest } from '../utilities/httpUtilities';
+import { lowerCaseRemoveSpacesDecode } from '../utilities/stringUtilities';
 
 export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName, gameId, queueId } = event.pathParameters;
-  const decodedSummonerName = decodeURIComponent(summonerName);
+  const formattedSummonerName = lowerCaseRemoveSpacesDecode(summonerName);
 
   const url = NA + MATCH_ENDPOINT + gameId;
   const options = await generateOptionsRequest(url);
@@ -19,7 +20,7 @@ export async function main(event, context, callback) {
   const matchData = await requestHandler(options);
   const matchType = mapQueueIdToMatchType(queueId);
 
-  const params = generateMatchParams(decodedSummonerName, matchData, matchType);
+  const params = generateMatchParams(formattedSummonerName, matchData, matchType);
 
   updatePlayerItemInDB(params);
 

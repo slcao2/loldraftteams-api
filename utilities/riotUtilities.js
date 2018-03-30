@@ -64,7 +64,7 @@ export const getPlayerFromDB = (summonerName) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      name: summonerName,
+      keyName: summonerName,
     },
   };
 
@@ -93,11 +93,11 @@ export const updatePlayerItemInDB = (params) => {
   });
 };
 
-export const generateSummonerParams = (summonerData) => {
+export const generateSummonerParams = (summonerName, summonerData) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      name: summonerData.name,
+      keyName: summonerName,
     },
     ExpressionAttributeNames: {
       '#id': 'id',
@@ -106,6 +106,7 @@ export const generateSummonerParams = (summonerData) => {
       '#revisionDate': 'revisionDate',
       '#summonerLevel': 'summonerLevel',
       '#expirationDate': 'expirationDate',
+      '#name': 'name',
     },
     ExpressionAttributeValues: {
       ':id': summonerData.id,
@@ -114,8 +115,10 @@ export const generateSummonerParams = (summonerData) => {
       ':revisionDate': summonerData.revisionDate,
       ':summonerLevel': summonerData.summonerLevel,
       ':expirationDate': Math.floor(Date.now() / 1000) + EXPIRARY_TIME,
+      ':name': summonerData.name,
     },
-    UpdateExpression: 'SET #id = :id, #accountId = :accountId, #profileIconId = :profileIconId, #revisionDate = :revisionDate, #summonerLevel = :summonerLevel, #expirationDate = :expirationDate',
+    UpdateExpression: `SET #id = :id, #accountId = :accountId, #profileIconId = :profileIconId, #revisionDate = :revisionDate, 
+                           #summonerLevel = :summonerLevel, #expirationDate = :expirationDate, #name = :name`,
   };
   return params;
 };
@@ -124,7 +127,7 @@ export const generateRankedParams = (summonerName, rankedData) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      name: summonerName,
+      keyName: summonerName,
     },
     ExpressionAttributeNames: {
       '#league': 'league',
@@ -143,7 +146,7 @@ export const generateMatchListParams = (summonerName, matchList, matchListType) 
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      name: summonerName,
+      keyName: summonerName,
     },
     ExpressionAttributeNames: {
       [matchListExpressionName]: matchListType,
@@ -162,7 +165,7 @@ export const generateMatchParams = (summonerName, matchData, matchType) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      name: summonerName,
+      keyName: summonerName,
     },
     ExpressionAttributeNames: {
       [matchExpressionName]: matchType,
