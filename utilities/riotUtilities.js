@@ -6,6 +6,7 @@ import {
   API_KEY_S3_BUCKET,
   API_KEY_S3_FILENAME,
   TABLE_NAME,
+  EXPIRARY_TIME,
 } from '../constants/awsConstants';
 import {
   RATE_LIMIT_EXCEEDED,
@@ -27,9 +28,6 @@ import {
 
 export const requestHandler = options => new Promise((resolve, reject) => {
   request(options, (error, response, body) => {
-    console.log(error);
-    console.log(response);
-    console.log(body);
     if (response.statusCode === RATE_LIMIT_EXCEEDED) {
       reject(new Error('Rate limit exceeded. Please try again in 2 minutes'));
     } else if (response.statusCode === FORBIDDEN) {
@@ -107,6 +105,7 @@ export const generateSummonerParams = (summonerData) => {
       '#profileIconId': 'profileIconId',
       '#revisionDate': 'revisionDate',
       '#summonerLevel': 'summonerLevel',
+      '#expirationDate': 'expirationDate',
     },
     ExpressionAttributeValues: {
       ':id': summonerData.id,
@@ -114,8 +113,9 @@ export const generateSummonerParams = (summonerData) => {
       ':profileIconId': summonerData.profileIconId,
       ':revisionDate': summonerData.revisionDate,
       ':summonerLevel': summonerData.summonerLevel,
+      ':expirationDate': Date.now() + EXPIRARY_TIME,
     },
-    UpdateExpression: 'SET #id = :id, #accountId = :accountId, #profileIconId = :profileIconId, #revisionDate = :revisionDate, #summonerLevel = :summonerLevel',
+    UpdateExpression: 'SET #id = :id, #accountId = :accountId, #profileIconId = :profileIconId, #revisionDate = :revisionDate, #summonerLevel = :summonerLevel, #expirationDate = :expirationDate',
   };
   return params;
 };

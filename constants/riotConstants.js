@@ -10,16 +10,16 @@ export const CHAMPION_MASTERY_ENDPOINT = '/lol/champion-mastery/v3/champion-mast
 export const STATIC_CHAMPION_ENDPOINT = '/lol/static-data/v3/champions/';
 
 // Response Codes
-export const BAD_REQUEST = 400;
-export const FORBIDDEN = 403;
-export const NOT_FOUND = 404;
-export const RATE_LIMIT_EXCEEDED = 429;
+export const BAD_REQUEST = '400';
+export const FORBIDDEN = '403';
+export const NOT_FOUND = '404';
+export const RATE_LIMIT_EXCEEDED = '429';
 
 // Matchmaking Queues
-export const SR_DRAFT_ID = 400;
-export const RANKED_SOLO_ID = 420;
-export const SR_BLIND_ID = 430;
-export const RANKED_FLEX_ID = 440;
+export const SR_DRAFT_ID = '400';
+export const RANKED_SOLO_ID = '420';
+export const SR_BLIND_ID = '430';
+export const RANKED_FLEX_ID = '440';
 
 // Match List Types
 export const SOLO_MATCH_LIST = 'soloMatchList';
