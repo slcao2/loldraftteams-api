@@ -11,8 +11,9 @@ export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName } = event.pathParameters;
+  const decodedSummonerName = decodeURIComponent(summonerName);
 
-  const cacheSummonerData = await getPlayerFromDB(summonerName);
+  const cacheSummonerData = await getPlayerFromDB(decodedSummonerName);
   if (cacheSummonerData) {
     const response = generate200Response(cacheSummonerData);
     callback(null, response);

@@ -10,13 +10,14 @@ export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName, summonerId } = event.pathParameters;
+  const decodedSummonerName = decodeURIComponent(summonerName);
 
   const url = NA + RANKED_POSITION_ENDPOINT + summonerId;
   const options = await generateOptionsRequest(url);
 
   const rankedData = await requestHandler(options);
 
-  const params = generateRankedParams(summonerName, rankedData);
+  const params = generateRankedParams(decodedSummonerName, rankedData);
 
   updatePlayerItemInDB(params);
 

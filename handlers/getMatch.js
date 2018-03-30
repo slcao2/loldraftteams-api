@@ -11,6 +11,7 @@ export const blank = 0;
 
 export async function main(event, context, callback) {
   const { summonerName, gameId, queueId } = event.pathParameters;
+  const decodedSummonerName = decodeURIComponent(summonerName);
 
   const url = NA + MATCH_ENDPOINT + gameId;
   const options = await generateOptionsRequest(url);
@@ -18,7 +19,7 @@ export async function main(event, context, callback) {
   const matchData = await requestHandler(options);
   const matchType = mapQueueIdToMatchType(queueId);
 
-  const params = generateMatchParams(summonerName, matchData, matchType);
+  const params = generateMatchParams(decodedSummonerName, matchData, matchType);
 
   updatePlayerItemInDB(params);
 
