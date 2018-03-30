@@ -113,7 +113,7 @@ export const generateSummonerParams = (summonerData) => {
       ':profileIconId': summonerData.profileIconId,
       ':revisionDate': summonerData.revisionDate,
       ':summonerLevel': summonerData.summonerLevel,
-      ':expirationDate': Date.now() + EXPIRARY_TIME,
+      ':expirationDate': Math.floor(Date.now() / 1000) + EXPIRARY_TIME,
     },
     UpdateExpression: 'SET #id = :id, #accountId = :accountId, #profileIconId = :profileIconId, #revisionDate = :revisionDate, #summonerLevel = :summonerLevel, #expirationDate = :expirationDate',
   };

@@ -32,4 +32,3 @@ export const SOLO_MATCH = 'soloMatch';
 export const FLEX_MATCH = 'flexMatch';
 export const DRAFT_MATCH = 'draftMatch';
 export const BLIND_MATCH = 'blindMatch';
-
