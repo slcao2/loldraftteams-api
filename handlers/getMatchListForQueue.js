@@ -21,6 +21,10 @@ export async function main(event, context, callback) {
   const options = await generateOptionsRequest(url);
 
   const matchList = await requestHandler(options);
+  if (matchList.statusCode) {
+    callback(null, matchList);
+    return;
+  }
   const matchListType = mapQueueIdToMatchListType(queueId);
 
   const params = generateMatchListParams(formattedSummonerName, matchList, matchListType);

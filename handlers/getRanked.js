@@ -17,6 +17,10 @@ export async function main(event, context, callback) {
   const options = await generateOptionsRequest(url);
 
   const rankedData = await requestHandler(options);
+  if (rankedData.statusCode) {
+    callback(null, rankedData);
+    return;
+  }
 
   const params = generateRankedParams(formattedSummonerName, rankedData);
 

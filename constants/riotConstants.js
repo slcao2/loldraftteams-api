@@ -10,10 +10,11 @@ export const CHAMPION_MASTERY_ENDPOINT = '/lol/champion-mastery/v3/champion-mast
 export const STATIC_CHAMPION_ENDPOINT = '/lol/static-data/v3/champions/';
 
 // Response Codes
-export const BAD_REQUEST = '400';
-export const FORBIDDEN = '403';
-export const NOT_FOUND = '404';
-export const RATE_LIMIT_EXCEEDED = '429';
+export const BAD_REQUEST = 400;
+export const FORBIDDEN = 403;
+export const NOT_FOUND = 404;
+export const RATE_LIMIT_EXCEEDED = 429;
+export const OK = 200;
 
 // Matchmaking Queues
 export const SR_DRAFT_ID = '400';

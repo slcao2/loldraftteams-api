@@ -18,6 +18,10 @@ export async function main(event, context, callback) {
   const options = await generateOptionsRequest(url);
 
   const matchData = await requestHandler(options);
+  if (matchData.statusCode) {
+    callback(null, matchData);
+    return;
+  }
   const matchType = mapQueueIdToMatchType(queueId);
 
   const params = generateMatchParams(formattedSummonerName, matchData, matchType);

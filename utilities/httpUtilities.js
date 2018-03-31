@@ -20,3 +20,12 @@ export const generate200Response = (data) => {
   };
   return response;
 };
+
+export const generateNon200Response = (error) => {
+  const response = {
+    statusCode: error.statusCode,
+    headers: HEADERS,
+    body: error.statusMessage,
+  };
+  return response;
+};

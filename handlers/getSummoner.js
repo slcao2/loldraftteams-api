@@ -25,6 +25,10 @@ export async function main(event, context, callback) {
   const options = await generateOptionsRequest(url);
 
   const summonerData = await requestHandler(options);
+  if (summonerData.statusCode) {
+    callback(null, summonerData);
+    return;
+  }
 
   const params = generateSummonerParams(formattedSummonerName, summonerData);
 

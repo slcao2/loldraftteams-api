@@ -9,9 +9,7 @@ import {
   EXPIRARY_TIME,
 } from '../constants/awsConstants';
 import {
-  RATE_LIMIT_EXCEEDED,
-  FORBIDDEN, NOT_FOUND,
-  BAD_REQUEST,
+  OK,
   SR_DRAFT_ID,
   RANKED_SOLO_ID,
   SR_BLIND_ID,
@@ -25,15 +23,12 @@ import {
   DRAFT_MATCH,
   BLIND_MATCH,
 } from '../constants/riotConstants';
+import { generateNon200Response } from './httpUtilities';
 
 export const requestHandler = options => new Promise((resolve, reject) => {
   request(options, (error, response, body) => {
-    if (response.statusCode === RATE_LIMIT_EXCEEDED) {
-      reject(new Error('Rate limit exceeded. Please try again in 2 minutes'));
-    } else if (response.statusCode === FORBIDDEN) {
-      reject(new Error('API key expired. Generate new api key.'));
-    } else if (response.statusCode === NOT_FOUND || response.statusCode === BAD_REQUEST) {
-      resolve(undefined);
+    if (response.statusCode !== OK) {
+      resolve(generateNon200Response(response));
     }
     resolve(JSON.parse(body));
   });
