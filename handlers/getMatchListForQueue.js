@@ -1,6 +1,7 @@
 import {
   NA,
   MATCH_LIST_ENDPOINT,
+  NOT_FOUND,
 } from '../constants/riotConstants';
 import {
   requestHandler,
@@ -20,8 +21,10 @@ export async function main(event, context, callback) {
   const url = `${NA + MATCH_LIST_ENDPOINT + accountId}?queue=${queueId}`;
   const options = await generateOptionsRequest(url);
 
-  const matchList = await requestHandler(options);
-  if (matchList.statusCode) {
+  let matchList = await requestHandler(options);
+  if (matchList.statusCode === NOT_FOUND) {
+    matchList = {};
+  } else if (matchList.statusCode) {
     callback(null, matchList);
     return;
   }
