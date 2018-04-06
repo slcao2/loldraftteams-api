@@ -26,7 +26,7 @@ export const generate200Response = (data) => {
 
 export const generateNon200Response = (error) => {
   const riotHeaders = {
-    'Retry-After': error['Retry-After'],
+    retryAfter: error['Retry-After'],
   };
   const errorHeaders = _.assign(riotHeaders, HEADERS);
 
