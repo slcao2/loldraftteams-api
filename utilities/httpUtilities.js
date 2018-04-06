@@ -1,4 +1,7 @@
+import _ from 'lodash';
+
 import { HEADERS } from '../constants/awsConstants';
+import { RATE_LIMIT_EXCEEDED } from '../constants/riotConstants';
 import { getApiKey } from '../utilities/riotUtilities';
 
 export const generateOptionsRequest = async (url) => {
@@ -22,9 +25,14 @@ export const generate200Response = (data) => {
 };
 
 export const generateNon200Response = (error) => {
+  const riotHeaders = {
+    'Retry-After': error['Retry-After'],
+  };
+  const errorHeaders = _.assign(riotHeaders, HEADERS);
+
   const response = {
     statusCode: error.statusCode,
-    headers: HEADERS,
+    headers: error.statusCode === RATE_LIMIT_EXCEEDED ? errorHeaders : HEADERS,
     body: error.statusMessage,
   };
   return response;
