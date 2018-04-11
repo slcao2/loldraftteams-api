@@ -28,7 +28,8 @@ import { generateNon200Response } from './httpUtilities';
 export const requestHandler = options => new Promise((resolve, reject) => {
   request(options, (error, response, body) => {
     if (response.statusCode !== OK) {
-      resolve(generateNon200Response(response));
+      resolve(generateNon200Response(response, options));
+      return;
     }
     resolve(JSON.parse(body));
   });
