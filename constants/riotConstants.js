@@ -1,5 +1,16 @@
 // Regional Endpoints
+export const BR = 'https://br1.api.riotgames.com';
+export const EUNE = 'https://eun1.api.riotgames.com';
+export const EUW = 'https://euw1.api.riotgames.com';
+export const JP = 'https://jp1.api.riotgames.com';
+export const KR = 'https://kr.api.riotgames.com';
+export const LAN = 'https://la1.api.riotgames.com';
+export const LAS = 'https://la2.api.riotgames.com';
 export const NA = 'https://na1.api.riotgames.com';
+export const OCE = 'https://oc1.api.riotgames.com';
+export const TR = 'https://tr1.api.riotgames.com';
+export const RU = 'https://ru.api.riotgames.com';
+export const PBE = 'https://pbe1.api.riotgames.com';
 
 // API Endpoints
 export const SUMMONER_NAME_ENDPOINT = '/lol/summoner/v3/summoners/by-name/';

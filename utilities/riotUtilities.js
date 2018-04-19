@@ -22,6 +22,18 @@ import {
   FLEX_MATCH,
   DRAFT_MATCH,
   BLIND_MATCH,
+  NA,
+  BR,
+  EUNE,
+  EUW,
+  JP,
+  KR,
+  LAN,
+  LAS,
+  TR,
+  OCE,
+  RU,
+  PBE,
 } from '../constants/riotConstants';
 import { generateNon200Response } from './httpUtilities';
 
@@ -54,13 +66,14 @@ export const getApiKey = () => {
   });
 };
 
-export const getPlayerFromDB = (summonerName) => {
+export const getPlayerFromDB = (summonerName, region) => {
   const dynamoDB = new DynamoDB.DocumentClient();
 
   const params = {
     TableName: TABLE_NAME,
     Key: {
       keyName: summonerName,
+      region,
     },
   };
 
@@ -89,11 +102,12 @@ export const updatePlayerItemInDB = (params) => {
   });
 };
 
-export const generateSummonerParams = (summonerName, summonerData) => {
+export const generateSummonerParams = (summonerName, summonerData, region) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
       keyName: summonerName,
+      region,
     },
     ExpressionAttributeNames: {
       '#id': 'id',
@@ -119,11 +133,12 @@ export const generateSummonerParams = (summonerName, summonerData) => {
   return params;
 };
 
-export const generateRankedParams = (summonerName, rankedData) => {
+export const generateRankedParams = (summonerName, rankedData, region) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
       keyName: summonerName,
+      region,
     },
     ExpressionAttributeNames: {
       '#league': 'league',
@@ -136,13 +151,14 @@ export const generateRankedParams = (summonerName, rankedData) => {
   return params;
 };
 
-export const generateMatchListParams = (summonerName, matchList, matchListType) => {
+export const generateMatchListParams = (summonerName, matchList, matchListType, region) => {
   const matchListExpressionName = `#${matchListType}`;
   const matchListExpressionValue = `:${matchListType}`;
   const params = {
     TableName: TABLE_NAME,
     Key: {
       keyName: summonerName,
+      region,
     },
     ExpressionAttributeNames: {
       [matchListExpressionName]: matchListType,
@@ -155,13 +171,14 @@ export const generateMatchListParams = (summonerName, matchList, matchListType) 
   return params;
 };
 
-export const generateMatchParams = (summonerName, matchData, matchType) => {
+export const generateMatchParams = (summonerName, matchData, matchType, region) => {
   const matchExpressionName = `#${matchType}`;
   const matchExpressionValue = `:${matchType}`;
   const params = {
     TableName: TABLE_NAME,
     Key: {
       keyName: summonerName,
+      region,
     },
     ExpressionAttributeNames: {
       [matchExpressionName]: matchType,
@@ -199,5 +216,36 @@ export const mapQueueIdToMatchType = (queueId) => {
     case RANKED_FLEX_ID:
       return FLEX_MATCH;
     default:
+  }
+};
+
+export const mapRegionToUrlEndpoint = (region) => {
+  switch (region) {
+    case 'BR':
+      return BR;
+    case 'EUNE':
+      return EUNE;
+    case 'EUW':
+      return EUW;
+    case 'JP':
+      return JP;
+    case 'KR':
+      return KR;
+    case 'LAN':
+      return LAN;
+    case 'LAS':
+      return LAS;
+    case 'NA':
+      return NA;
+    case 'OCE':
+      return OCE;
+    case 'TR':
+      return TR;
+    case 'RU':
+      return RU;
+    case 'PBE':
+      return PBE;
+    default:
+      return '';
   }
 };

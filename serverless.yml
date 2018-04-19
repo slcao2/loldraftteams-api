@@ -38,27 +38,27 @@ functions:
     handler: handlers/getSummoner.main
     events:
       - http:
-          path: summoner/{summonerName}
+          path: summoner/{region}/{summonerName}
           method: get
           cors: true
   getRanked:
     handler: handlers/getRanked.main
     events:
       - http:
-          path: league/{summonerName}/{summonerId}
+          path: league/{region}/{summonerName}/{summonerId}
           method: get
           cors: true
   getMatchListForQueue:
     handler: handlers/getMatchListForQueue.main
     events:
       - http:
-          path: matchlist/{summonerName}/{accountId}/{queueId}
+          path: matchlist/{region}/{summonerName}/{accountId}/{queueId}
           method: get
           cors: true
   getMatch:
     handler: handlers/getMatch.main
     events:
       - http:
-          path: match/{summonerName}/{gameId}/{queueId}
+          path: match/{region}/{summonerName}/{gameId}/{queueId}
           method: get
           cors: true
