@@ -191,6 +191,24 @@ export const generateMatchParams = (summonerName, matchData, matchType, region) 
   return params;
 };
 
+export const generateMasteryParams = (summonerName, masteryData, region) => {
+  const params = {
+    TableName: TABLE_NAME,
+    Key: {
+      keyName: summonerName,
+      region,
+    },
+    ExpressionAttributeNames: {
+      '#mastery': 'mastery',
+    },
+    ExpressionAttributeValues: {
+      ':mastery': masteryData,
+    },
+    UpdateExpression: 'SET #mastery = :mastery',
+  };
+  return params;
+};
+
 export const mapQueueIdToMatchListType = (queueId) => {
   switch (queueId) {
     case SR_DRAFT_ID:
