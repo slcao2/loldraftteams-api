@@ -3,37 +3,12 @@ import S3 from 'aws-sdk/clients/s3';
 import DynamoDB from 'aws-sdk/clients/dynamodb';
 import request from 'request';
 import {
-  API_KEY_S3_BUCKET,
-  API_KEY_S3_FILENAME,
-  TABLE_NAME,
-  EXPIRARY_TIME,
+  API_KEY_S3_BUCKET, API_KEY_S3_FILENAME, TABLE_NAME, EXPIRARY_TIME,
 } from '../constants/awsConstants';
 import {
-  OK,
-  SR_DRAFT_ID,
-  RANKED_SOLO_ID,
-  SR_BLIND_ID,
-  RANKED_FLEX_ID,
-  SOLO_MATCH_LIST,
-  FLEX_MATCH_LIST,
-  DRAFT_MATCH_LIST,
-  BLIND_MATCH_LIST,
-  SOLO_MATCH,
-  FLEX_MATCH,
-  DRAFT_MATCH,
-  BLIND_MATCH,
-  NA,
-  BR,
-  EUNE,
-  EUW,
-  JP,
-  KR,
-  LAN,
-  LAS,
-  TR,
-  OCE,
-  RU,
-  PBE,
+  OK, SR_DRAFT_ID, RANKED_SOLO_ID, SR_BLIND_ID, RANKED_FLEX_ID, SOLO_MATCH_LIST,
+  FLEX_MATCH_LIST, DRAFT_MATCH_LIST, BLIND_MATCH_LIST, SOLO_MATCH, FLEX_MATCH,
+  DRAFT_MATCH, BLIND_MATCH, NA, BR, EUNE, EUW, JP, KR, LAN, LAS, TR, OCE, RU, PBE,
 } from '../constants/riotConstants';
 import { generateNon200Response } from './httpUtilities';
 
@@ -72,7 +47,7 @@ export const getPlayerFromDB = (summonerName, region) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      keyName: summonerName,
+      summonerName,
       region,
     },
   };
@@ -106,29 +81,31 @@ export const generateSummonerParams = (summonerName, summonerData, region) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      keyName: summonerName,
+      summonerName,
       region,
     },
     ExpressionAttributeNames: {
-      '#id': 'id',
       '#accountId': 'accountId',
+      '#expirationDate': 'expirationDate',
+      '#id': 'id',
+      '#name': 'name',
       '#profileIconId': 'profileIconId',
+      '#puuid': 'puuid',
       '#revisionDate': 'revisionDate',
       '#summonerLevel': 'summonerLevel',
-      '#expirationDate': 'expirationDate',
-      '#name': 'name',
     },
     ExpressionAttributeValues: {
-      ':id': summonerData.id,
       ':accountId': summonerData.accountId,
+      ':expirationDate': Math.floor(Date.now() / 1000) + EXPIRARY_TIME,
+      ':id': summonerData.id,
+      ':name': summonerData.name,
       ':profileIconId': summonerData.profileIconId,
+      ':puuid': summonerData.puuid,
       ':revisionDate': summonerData.revisionDate,
       ':summonerLevel': summonerData.summonerLevel,
-      ':expirationDate': Math.floor(Date.now() / 1000) + EXPIRARY_TIME,
-      ':name': summonerData.name,
     },
-    UpdateExpression: `SET #id = :id, #accountId = :accountId, #profileIconId = :profileIconId, #revisionDate = :revisionDate, 
-                           #summonerLevel = :summonerLevel, #expirationDate = :expirationDate, #name = :name`,
+    UpdateExpression: `SET #accountId = :accountId, #expirationDate = :expirationDate, #id = :id, #name = :name, #profileIconId = :profileIconId, 
+                           #puuid = :puuid, #revisionDate = :revisionDate, #summonerLevel = :summonerLevel`,
   };
   return params;
 };
@@ -137,7 +114,7 @@ export const generateRankedParams = (summonerName, rankedData, region) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      keyName: summonerName,
+      summonerName,
       region,
     },
     ExpressionAttributeNames: {
@@ -157,7 +134,7 @@ export const generateMatchListParams = (summonerName, matchList, matchListType, 
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      keyName: summonerName,
+      summonerName,
       region,
     },
     ExpressionAttributeNames: {
@@ -177,7 +154,7 @@ export const generateMatchParams = (summonerName, matchData, matchType, region) 
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      keyName: summonerName,
+      summonerName,
       region,
     },
     ExpressionAttributeNames: {
@@ -195,7 +172,7 @@ export const generateMasteryParams = (summonerName, masteryData, region) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
-      keyName: summonerName,
+      summonerName,
       region,
     },
     ExpressionAttributeNames: {
