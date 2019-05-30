@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import { HEADERS } from '../constants/awsConstants';
 import { NOT_FOUND, RATE_LIMIT_EXCEEDED } from '../constants/riotConstants';
 import { getApiKey } from '../utilities/riotUtilities';
@@ -33,5 +31,6 @@ export const generateNon200Response = (error, options) => {
     headers: HEADERS,
     body: summoner || retryAfter || error.statusMessage,
   };
+  console.log(`Riot API Error Response: ${JSON.stringify(response)}`);
   return response;
 };

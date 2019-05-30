@@ -13,11 +13,11 @@ export const RU = 'https://ru.api.riotgames.com';
 export const PBE = 'https://pbe1.api.riotgames.com';
 
 // API Endpoints
-export const SUMMONER_NAME_ENDPOINT = '/lol/summoner/v3/summoners/by-name/';
-export const RANKED_POSITION_ENDPOINT = '/lol/league/v3/positions/by-summoner/';
-export const MATCH_LIST_ENDPOINT = '/lol/match/v3/matchlists/by-account/';
-export const MATCH_ENDPOINT = '/lol/match/v3/matches/';
-export const CHAMPION_MASTERY_ENDPOINT = '/lol/champion-mastery/v3/champion-masteries/by-summoner/';
+export const SUMMONER_NAME_ENDPOINT = '/lol/summoner/v4/summoners/by-name/';
+export const RANKED_POSITION_ENDPOINT = '/lol/league/v4/entries/by-summoner/';
+export const MATCH_LIST_ENDPOINT = '/lol/match/v4/matchlists/by-account/';
+export const MATCH_ENDPOINT = '/lol/match/v4/matches/';
+export const CHAMPION_MASTERY_ENDPOINT = '/lol/champion-mastery/v4/champion-masteries/by-summoner/';
 export const STATIC_CHAMPION_ENDPOINT = '/lol/static-data/v3/champions/';
 
 // Response Codes

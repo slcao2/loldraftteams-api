@@ -62,3 +62,10 @@ functions:
           path: match/{region}/{summonerName}/{gameId}/{queueId}
           method: get
           cors: true
+  getMastery:
+    handler: handlers/getMastery.main
+    events:
+      - http:
+          path: mastery/{region}/{summonerName}/{summonerId}
+          method: get
+          cors: true
